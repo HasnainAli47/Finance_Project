@@ -1,0 +1,7 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  CurrentBalance: 9.99
+
+two:
+  CurrentBalance: 9.99

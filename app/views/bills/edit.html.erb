@@ -1,0 +1,10 @@
+<div class="max-w-md mx-auto py-6 px-4">
+  <h1 class="text-3xl font-bold mb-6">Editing Bill</h1>
+
+  <%= render "form", bill: @bill %>
+
+  <div class="mt-6 flex justify-between">
+    <%= link_to "Show this bill", @bill, class: "text-indigo-600 hover:text-indigo-900" %>
+    <%= link_to "Back to bills", bills_path, class: "text-indigo-600 hover:text-indigo-900" %>
+  </div>
+</div>
