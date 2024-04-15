@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Filtered Bills</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .date-range {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: center;
+    }
+    .generated-at {
+      text-align: right;
+      font-size: 10px;
+      margin-top: 20px;
+    }
+    .balances {
+      text-align: right;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Filtered Bills</h1>
+    <div class="date-range">
+      <p>Bills from <%= @from_date %> to <%= @to_date %></p>
+    </div>
+    <div class="generated-at">
+      <p>Generated at: <%= Time.now.strftime("%d %b %Y %H:%M:%S") %></p>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Refernce</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bills.each do |bill| %>
+          <tr>
+            <td><%= bill.created_at.strftime("%e %b %Y") %></td>
+            <td><%= bill.bill_reference %></td>
+            <td><%= bill.amount %></td>
+            <td><%= bill.description %></td>
+            <td><%= bill.status.upcase %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <div class="balances">
+      <p> Balance IN: <%= @balance_in %></p>
+      <p> Balance OUT: <%= @balance_out %></p>
+      <% @accounts.each do |account| %>
+          <% if account.id == 1 %>
+          <%= "Cash Balance: #{account.CurrentBalance}" %>
+          <% else %>
+          <p>
+          <%= "Bank Balance: #{account.CurrentBalance}" %>
+          </p>
+          <% end %>
+      <% end %>
+    </div>
+  </div>
+</body>
+</html>

@@ -6,6 +6,13 @@
   <%# Want to show the flash message in red color %>
   <h3 class="text-center text-xl text-red-500"> <%= flash[:error] %> </h3>
 
+
+  <% if @from_date.present? && @to_date.present? %>
+  <div class="flex justify-end">
+    <%= link_to "Generate PDF", filter_bills_path(format: :pdf, from_date: @from_date, to_date: @to_date), class: "bg-blue-500 mb-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+</div>
+  <% end %>
+
   <%= render "filter" %>
 
 
@@ -14,11 +21,14 @@
 
 
   <div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200">
+  <table class="min-w-full bg-white border border-gray-200" style="table-layout: fixed;">
     <thead>
       <tr>
-        <th class="px-6 py-3 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center w-1/8">Bill ID</th>
+        
+         <th class="px-6 py-3 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center w-1/9">Bill ID</th> 
+
         <th class="px-6 py-3 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center w-1/3">Date</th>
+        <th class="px-6 py-3 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center w-1/8">Refernce</th>
         <th class="px-6 py-3 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center w-1/8">Amount</th>
         <th class="px-6 py-3 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center w-1/2">Description</th>
         <th class="px-6 py-3 bg-gray-100 text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider text-center w-1/2">Bill Image</th>
@@ -29,9 +39,11 @@
     <tbody>
       <% @bills.each do |bill| %>
         <tr>
-          <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/8"><%= bill.id %></td>
+          <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/9"><%= bill.id %></td>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/3"><%= bill.created_at.strftime("%e %b %Y") %></td>
-          <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/8"><%= bill.amount %></td>
+                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/8"><%= bill.bill_reference %></td>
+         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/8"><%= bill.amount %></td> 
+
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/8"><%= bill.description %></td>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/8"><%= image_tag bill.image if bill.image.attached? %></td>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-center w-1/8"><%= bill.status.upcase %></td>

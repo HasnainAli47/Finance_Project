@@ -6,12 +6,13 @@ class Bill < ApplicationRecord
 
   belongs_to :account, optional: true
 
-  before_save :update_account_balance
+  after_save :update_account_balance
 
   private
 
   def update_account_balance
     if account.present?
+      debugger
       if status == 'in'
         account.update(CurrentBalance: account.CurrentBalance + amount)
       elsif status == 'out'
@@ -22,16 +23,16 @@ class Bill < ApplicationRecord
 
 
   after_destroy :update_account_balance_on_destroy
-  before_update :update_account_balance
+  # before_update :update_account_balance
 
-  private
+  # private
   
-  def update_account_balance
-    if account.present?
-      debugger
-    end
-  end
-  
+  # def update_account_balance
+  #   if account.present?
+  #     debugger
+  #   end
+  # end
+
 
   private
 

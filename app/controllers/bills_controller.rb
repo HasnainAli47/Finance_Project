@@ -28,6 +28,8 @@ class BillsController < ApplicationController
 
   def filter
     if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date]
+      @to_date = params[:to_date]
       @bills =  Bill.includes(:account).where(created_at: params[:from_date]..params[:to_date])
       @bills_in = Bill.includes(:account).where(status: 'in')
       
@@ -39,21 +41,23 @@ class BillsController < ApplicationController
   
       
     else
-      # Want to show a flash message that nothing found for these dates
-      # flash[:error] = "No bills found for these dates"
-      @bills = Bill.all
-      @bills_in = Bill.includes(:account).where(status: 'in')
-      @balance_in = GetTotalAmount(@bills_in)
-      
-      @bills_out = Bill.includes(:account).where(status: 'out')
-      @balance_out = GetTotalAmount(@bills_out)
-      @accounts = Account.all
+      # Redirect to index
+      redirect_to bills_url
     end
   
     if @bills.empty?
       flash[:error] = "No Data is present for these dates"
     end
     # render :index
+
+
+
+    respond_to do |format|
+      format.html { render :index }
+      format.pdf do
+        render pdf: "filtered_bills", template: "bills/filtered_bills", formats: [:html]
+      end
+    end
   end
   
 
