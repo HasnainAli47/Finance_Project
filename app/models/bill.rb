@@ -12,7 +12,7 @@ class Bill < ApplicationRecord
 
   def update_account_balance
     if account.present?
-      debugger
+      
       if status == 'in'
         account.update(CurrentBalance: account.CurrentBalance + amount)
       elsif status == 'out'
