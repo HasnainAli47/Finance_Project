@@ -1,7 +1,7 @@
 class Account < ApplicationRecord
   has_many :bills
 
-  validates :CurrentBalance, presence: true # Updated to use snake_case naming convention
+  validates :CurrentBalance, presence: true 
 
   after_initialize :initialize_balance
 

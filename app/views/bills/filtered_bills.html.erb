@@ -19,9 +19,14 @@
     }
     .date-range {
       text-align: center;
-      font-weight: bold;
       margin-bottom: 20px;
     }
+
+    .date {
+      font-weight: bold;
+      font-size: 1.1em; /* Increase font size */
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -45,10 +50,11 @@
 </head>
 <body>
   <div class="container">
-    <h1>Filtered Bills</h1>
+    <h1>XYZ Company Bill</h1>
     <div class="date-range">
-      <p>Bills from <%= @from_date %> to <%= @to_date %></p>
+      <p>Bills from <span class="date"><%= Date.parse(@from_date).strftime("%e %b %Y") %></span> to <span class="date"><%= Date.parse(@to_date).strftime("%e %b %Y") %></span></p>
     </div>
+
     <div class="generated-at">
       <p>Generated at: <%= Time.now.strftime("%d %b %Y %H:%M:%S") %></p>
     </div>

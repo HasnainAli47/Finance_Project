@@ -31,19 +31,22 @@ class BillsController < ApplicationController
       @from_date = params[:from_date]
       @to_date = params[:to_date]
       @bills =  Bill.includes(:account).where(created_at: params[:from_date]..params[:to_date])
-      @bills_in = Bill.includes(:account).where(status: 'in')
+      @bills_in = @bills.includes(:account).where(status: 'in')
       
       @balance_in = GetTotalAmount(@bills_in)
       
-      @bills_out = Bill.includes(:account).where(status: 'out')
+      @bills_out = @bills.includes(:account).where(status: 'out')
       @balance_out = GetTotalAmount(@bills_out)
       @accounts = Account.all
   
       
     else
-      # Redirect to index
+      # Redirect to index with error message
+      flash[:error] = "Please Enter To and From Dates"
       redirect_to bills_url
+      return
     end
+    
   
     if @bills.empty?
       flash[:error] = "No Data is present for these dates"
