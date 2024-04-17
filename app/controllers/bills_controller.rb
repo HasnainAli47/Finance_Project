@@ -100,6 +100,7 @@ class BillsController < ApplicationController
       @bill.account = account
       
       if @bill.save
+        BillNotifierMailer.notify_user(current_user).deliver
         format.html { redirect_to bill_url(@bill), notice: "Bill was successfully created." }
         format.json { render :show, status: :created, location: @bill }
       else
