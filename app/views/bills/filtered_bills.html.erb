@@ -85,13 +85,9 @@
       <p> Balance IN: <%= @balance_in %></p>
       <p> Balance OUT: <%= @balance_out %></p>
       <% @accounts.each do |account| %>
-          <% if account.id == 1 %>
-          <%= "Cash Balance: #{account.CurrentBalance}" %>
-          <% else %>
-          <p>
-          <%= "Bank Balance: #{account.CurrentBalance}" %>
-          </p>
-          <% end %>
+        <p>
+          <%= "#{account.account_title.upcase} Balance: #{account.CurrentBalance}"%>
+        </p>
       <% end %>
     </div>
   </div>

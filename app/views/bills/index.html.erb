@@ -70,13 +70,18 @@
   <div class="max-w-sm bg-gray-100 border border-gray-200 p-4 rounded-lg">
     <h2 class="text-lg font-semibold mb-2">Current Balances</h2>
     <ul>
-      <% @accounts.each do |account| %>
+      <% @user_accounts.each do |account| %>
         <li>
-          <% if account.id == 1 %>
+        <%= "#{(account.account_title).upcase} Balance: #{account.CurrentBalance}" %>
+          <%
+=begin%>
+ <% if account.account_title == "cash" %>
           <%= "Cash Balance: #{account.CurrentBalance}" %>
           <% else %>
           <%= "Bank Balance: #{account.CurrentBalance}" %>
-          <% end %>
+          <% end %> 
+<%
+=end%>
         </li>
       <% end %>
       <li>

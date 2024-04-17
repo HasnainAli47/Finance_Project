@@ -1,0 +1,55 @@
+<nav class="bg-gray-800 p-6">
+  <div class="container mx-auto flex justify-between items-center">
+    <div class="flex items-center">
+      <a href="#" class="text-white mr-4">Finance Management</a>
+    </div>
+    <div class="flex items-center">
+      <input type="checkbox" id="toggle-menu" class="hidden" />
+      <label for="toggle-menu" class="text-white mr-4 cursor-pointer md:hidden">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </label>
+      <div class="hidden md:flex">
+        <% if user_signed_in? %>
+          <span class="text-white mr-4">Welcome, <%= current_user.email %></span>
+          <%= button_to destroy_user_session_path, method: 'delete', class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" do %>
+            Sign Out
+          <% end %>
+        <% else %>
+          <%= link_to "Sign in", new_user_session_path, class: "text-white mr-4" %>
+          <%= link_to "Sign up", new_user_registration_path, class: "text-white" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<script>
+  // Wait for the document to be fully loaded before executing JavaScript
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the toggle-menu element
+    var toggleMenu = document.getElementById('toggle-menu');
+
+    // Check if the toggle-menu element exists
+    if (toggleMenu) {
+      // Add change event listener to the toggle-menu element
+      toggleMenu.addEventListener('change', function() {
+        // Get the menu items container
+        var menuItemsContainer = document.querySelector('.hidden.md\\:flex');
+        
+        // Check if the menu items container exists
+        if (menuItemsContainer) {
+          // Toggle the visibility of the menu items based on the toggle-menu state
+          if (toggleMenu.checked) {
+            menuItemsContainer.classList.remove('hidden');
+          } else {
+            menuItemsContainer.classList.add('hidden');
+          }
+        }
+      });
+    }
+  });
+</script>
+

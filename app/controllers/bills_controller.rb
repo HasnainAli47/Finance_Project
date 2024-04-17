@@ -1,17 +1,23 @@
 class BillsController < ApplicationController
   before_action :set_bill, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
 
   # GET /bills or /bills.json
   def index
-    @bills = Bill.includes(:account).all
-    @bills_in = Bill.includes(:account).where(status: 'in')
-      
-      @balance_in = GetTotalAmount(@bills_in)
-      
-      @bills_out = Bill.includes(:account).where(status: 'out')
-      @balance_out = GetTotalAmount(@bills_out)
-    @accounts = Account.all
+    @user_accounts = current_user.accounts.includes(:bills)
+    
+    # Collect all bills associated with the user's accounts
+    @bills = @user_accounts.flat_map(&:bills)
+    
+    # Filter bills for 'in' and 'out' statuses
+    @bills_in = @bills.select { |bill| bill.status == 'in' }
+    @bills_out = @bills.select { |bill| bill.status == 'out' }
+    
+    # Calculate balances
+    @balance_in = GetTotalAmount(@bills_in)
+    @balance_out = GetTotalAmount(@bills_out)
   end
+  
 
 
   def GetTotalAmount(bills)
@@ -77,6 +83,7 @@ class BillsController < ApplicationController
   # GET /bills/new
   def new
     @bill = Bill.new
+    # debugger
   end
 
   # GET /bills/1/edit
@@ -85,12 +92,13 @@ class BillsController < ApplicationController
 
   def create
     @bill = Bill.new(bill_params)
+    
     respond_to do |format|
       account_title = params[:bill][:account_type]
-      account = Account.find_or_create_by(account_title: account_title)          
+      account = current_user.accounts.find_or_create_by(account_title: account_title)          
       
       @bill.account = account
-
+      
       if @bill.save
         format.html { redirect_to bill_url(@bill), notice: "Bill was successfully created." }
         format.json { render :show, status: :created, location: @bill }
@@ -129,6 +137,7 @@ class BillsController < ApplicationController
     def set_bill
       @bill = Bill.find(params[:id])
     end
+
 
     # Only allow a list of trusted parameters through.
     def bill_params

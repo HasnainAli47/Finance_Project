@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :bills do
     collection do
       get 'filter', to: 'bills#filter', as: 'filter'

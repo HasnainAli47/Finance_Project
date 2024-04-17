@@ -8,10 +8,13 @@ class Bill < ApplicationRecord
 
   after_save :update_account_balance
 
+  
+
   private
 
   def update_account_balance
     if account.present?
+      debugger
       
       if status == 'in'
         account.update(CurrentBalance: account.CurrentBalance + amount)
