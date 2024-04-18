@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
-  has_many :bills
+  # has many bills but make them destroy when account is destroyed
+  has_many :bills, dependent: :destroy
   belongs_to :user
 
   validates :CurrentBalance, presence: true 

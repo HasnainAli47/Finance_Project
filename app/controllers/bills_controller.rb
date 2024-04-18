@@ -36,14 +36,31 @@ class BillsController < ApplicationController
     if params[:from_date].present? && params[:to_date].present?
       @from_date = params[:from_date]
       @to_date = params[:to_date]
-      @bills =  Bill.includes(:account).where(created_at: params[:from_date]..params[:to_date])
-      @bills_in = @bills.includes(:account).where(status: 'in')
-      
+
+      # Get accounts of the current_user
+      @user_accounts = current_user.accounts.includes(:bills)
+
+      # Get bills which are attached to these accounts
+      @bills = @user_accounts.flat_map(&:bills)
+
+      # Filter bills for 'in' and 'out' statuses
+      @bills_in = @bills.select { |bill| bill.status == 'in' }
+      @bills_out = @bills.select { |bill| bill.status == 'out' }
+
+      # Balance 'in' and 'out'
       @balance_in = GetTotalAmount(@bills_in)
-      
-      @bills_out = @bills.includes(:account).where(status: 'out')
       @balance_out = GetTotalAmount(@bills_out)
-      @accounts = Account.all
+
+
+
+      # @bills =  Bill.includes(:account).where(created_at: params[:from_date]..params[:to_date])
+      # @bills_in = @bills.includes(:account).where(status: 'in')
+      
+      # @balance_in = GetTotalAmount(@bills_in)
+      
+      # @bills_out = @bills.includes(:account).where(status: 'out')
+      # @balance_out = GetTotalAmount(@bills_out)
+      # @accounts = Account.all
   
       
     else
@@ -64,7 +81,7 @@ class BillsController < ApplicationController
     respond_to do |format|
       format.html { render :index }
       format.pdf do
-        render pdf: "filtered_bills", template: "bills/filtered_bills", formats: [:html]
+        render pdf: "Bill_at_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}", template: "bills/filtered_bills", formats: [:html]
       end
     end
   end

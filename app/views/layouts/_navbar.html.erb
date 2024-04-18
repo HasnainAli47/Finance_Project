@@ -12,9 +12,11 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
         </svg>
       </label>
-      <div class="hidden md:flex">
+     <div class="hidden md:flex">
         <% if user_signed_in? %>
-          <span class="text-white mr-4">Welcome, <%= current_user.email %></span>
+          <%#span class="text-white mr-4">Welcome, <%= current_user.email #%><%#/span%>
+
+          <%= link_to "Profile Setting", edit_user_registration_path, class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline" %>
           <%= button_to destroy_user_session_path, method: 'delete', class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" do %>
             Sign Out
           <% end %>
@@ -23,6 +25,7 @@
           <%= link_to "Sign up", new_user_registration_path, class: "text-white" %>
         <% end %>
       </div>
+
     </div>
   </div>
 </nav>
