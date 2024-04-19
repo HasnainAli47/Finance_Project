@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+  # Sidekeq web interface route
+  mount Sidekiq::Web => '/sidekiq'
   devise_for :users
   resources :bills do
     collection do

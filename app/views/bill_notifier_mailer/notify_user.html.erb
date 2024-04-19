@@ -1,1 +1,70 @@
-<h1>Hey New Bill is added</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    /* Add your custom CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #007bff;
+      margin-top: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .footer {
+      font-size: 14px;
+      color: #666;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hey <%= @user.email.split('@').first.capitalize %></h1>
+    <p>A new bill has been added to your account:</p>
+    <table>
+      <tr>
+        <th>Bill Number</th>
+        <td><%= @bill.id %></td>
+      </tr>
+      <tr>
+        <th>Title</th>
+        <td><%= @bill.bill_reference %></td>
+      </tr>
+      <tr>
+        <th>Amount</th>
+        <td><%= number_to_currency(@bill.amount) %></td>
+      </tr>
+      <!-- Add more fields here if needed -->
+    </table>
+    <p>Thank you for using XYZ Company.</p>
+  </div>
+  <div class="footer">
+    This email was sent by XYZ Company. If you have any questions, please contact us at <a href="mailto:info@example.com">info@example.com</a>.
+  </div>
+</body>
+</html>
